@@ -139,6 +139,10 @@ func (res *Resource) NewSlice() interface{} {
 	if res.Value == nil {
 		return nil
 	}
+	typeOf := reflect.TypeOf(res.Value)
+	if typeOf.Kind() == reflect.Ptr {
+		typeOf = typeOf.Elem()
+	}
 	sliceType := reflect.SliceOf(reflect.TypeOf(res.Value))
 	slice := reflect.MakeSlice(sliceType, 0, 0)
 	slicePtr := reflect.New(sliceType)

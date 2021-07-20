@@ -255,6 +255,9 @@ func setupValuer(meta *Meta, fieldName string, record interface{}) {
 					// Iterate each field see if it is an relationship field like
 					// Factories []factory.Factory
 					// If so, set the CompositePrimaryKey value for PrimaryKeyOf to read
+					if f.Field.Kind() == reflect.Ptr && f.Field.IsNil() {
+						return ""
+					}
 					if (relationship.Kind == "has_many" || relationship.Kind == "many_to_many") && f.Field.Len() == 0 {
 						// Retrieve the associated records from db
 						context.GetDB().Set("publish:version:mode", "multiple").Model(value).Related(f.Field.Addr().Interface(), fieldName)
